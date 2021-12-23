@@ -12,9 +12,7 @@ const SendCrypto = ({ account, ethereum }) => {
   const Web3 = require('web3');
   const web3 = new Web3('http://localhost:3000/');
   const toWeiAmount = web3.utils.toHex(web3.utils.toWei(`${amount}`));
-  console.log(amount);
 
-  console.log(toWeiAmount);
   const handleEventForm = (e) => {
     const { name, value } = e.target;
     setEventFormData({
