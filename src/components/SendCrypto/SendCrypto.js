@@ -1,17 +1,20 @@
+/* eslint-disable global-require */
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 
 const SendCrypto = ({ account, ethereum }) => {
   const [eventFormData, setEventFormData] = useState({
     wallet: '',
-    amount: 0,
+    amount: 0.1,
   });
   const { wallet, amount } = eventFormData;
 
-  // Don't understand how i can convert to heximal value
-  // and send this value in function sendEth
-  const amountHex16 = amount.toString(16);
+  const Web3 = require('web3');
+  const web3 = new Web3('http://localhost:3000/');
+  const toWeiAmount = web3.utils.toHex(web3.utils.toWei(`${amount}`));
+  console.log(amount);
 
+  console.log(toWeiAmount);
   const handleEventForm = (e) => {
     const { name, value } = e.target;
     setEventFormData({
@@ -20,24 +23,24 @@ const SendCrypto = ({ account, ethereum }) => {
     });
   };
 
-  const sendEth = (e) => {
+  async function sendEth(e) {
     e.preventDefault();
-    ethereum
-      .request({
+
+    try {
+      await ethereum.request({
         method: 'eth_sendTransaction',
         params: [
           {
             from: account,
             to: wallet,
-            value: amountHex16,
-            gasPrice: '0x09184e72a000',
-            gas: '0x2710',
+            value: toWeiAmount,
           },
         ],
-      })
-      .then((txHash) => console.log(txHash))
-      .catch((error) => console.log(error));
-  };
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <form className="event-form">

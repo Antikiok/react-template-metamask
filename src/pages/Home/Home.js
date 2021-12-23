@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import React from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { injected } from '../../components/Wallet/connectors';
@@ -6,6 +7,7 @@ import SendCrypto from '../../components/SendCrypto/SendCrypto';
 const Home = () => {
   const { active, account, activate, deactivate } = useWeb3React();
   const { ethereum } = window;
+
   async function connect() {
     try {
       await activate(injected);
